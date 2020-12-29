@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 
 public enum PlayerType {
     player1,
@@ -12,6 +13,7 @@ public class GameController : MonoBehaviour
     public PaddleController player2;
     public GoalController player1Goal;
     public GoalController player2Goal;
+    public TextMeshProUGUI scoreText;
 
     private int player1Score = 0;
     private int player2Score = 0;
@@ -43,11 +45,20 @@ public class GameController : MonoBehaviour
                 throw new System.Exception("Invalid PlayerType passed to Score");
         }
 
+        UpdateScoreText();
+
         ball.Reset();
+        player1.Reset();
+        player2.Reset();
+
         Invoke(nameof(StartMovingBall), 2f);
     }
 
     private void StartMovingBall() {
         ball.StartMoving();
+    }
+
+    private void UpdateScoreText() {
+        scoreText.text = player1Score + " - " + player2Score;
     }
 }

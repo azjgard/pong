@@ -17,6 +17,8 @@ public class PaddleController : MonoBehaviour
     [SerializeField]
     private float maxSpeed = 0.0f;
 
+    private Vector2 startingPosition;
+
     private Vector2 movementVector => 
         new Vector2(0, acceleration);
 
@@ -28,6 +30,7 @@ public class PaddleController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        startingPosition = transform.position;
     }
 
     void Update()
@@ -53,6 +56,21 @@ public class PaddleController : MonoBehaviour
     private void Move(Vector2 vector) {
         rb.AddForce(
             vector,
+            ForceMode2D.Impulse
+        );
+    }
+    
+    public void Reset() {
+        transform.position = startingPosition;
+        ZeroOutVelocity();
+    }
+
+    private void ZeroOutVelocity() {
+        rb.AddForce(
+            new Vector2(
+                -rb.velocity.x,
+                -rb.velocity.y
+            ),
             ForceMode2D.Impulse
         );
     }

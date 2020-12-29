@@ -17,7 +17,7 @@ public class BallController : MonoBehaviour
     {
         rnd = new System.Random(DateTime.Now.Millisecond);
         ballSprite = GetComponent<SpriteRenderer>().sprite;
-        layerMask = getCollidableLayersMask();
+        layerMask = generateLayerMask();
     }
 
     void Update()
@@ -31,17 +31,25 @@ public class BallController : MonoBehaviour
     }
 
     private void HandleBouncing() {
+        bool didBounce = false;
+
         if (
             IsColliding(CollisionDirection.Top) ||
             IsColliding(CollisionDirection.Bottom)
         ) {
             velocity.y *= -1;
+            didBounce = true;
         }
         else if (
             IsColliding(CollisionDirection.Right) ||
             IsColliding(CollisionDirection.Left) 
         ) {
             velocity.x *= -1;
+            didBounce = true;
+        }
+
+        if (didBounce) {
+            velocity *= 1.05f;
         }
     }
 
@@ -74,7 +82,7 @@ public class BallController : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(
             origin: transform.position,
             direction: direction,
-            distance: distance * 1.1f,
+            distance: distance * 1.05f,
             layerMask
         );
 
@@ -102,7 +110,7 @@ public class BallController : MonoBehaviour
         transform.position = new Vector2(0, 0);
     }
 
-    private int getCollidableLayersMask() {
+    private int generateLayerMask() {
         int layerMask = 0;
 
         for (int i = 0; i < collidableLayers.Length; i++) {
