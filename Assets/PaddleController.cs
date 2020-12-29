@@ -15,6 +15,8 @@ public class PaddleController : MonoBehaviour
     [SerializeField]
     private float accelerationDirectionChange = 0.0f;
     [SerializeField]
+    private float slowdownRate = 0.0f;
+    [SerializeField]
     private float maxSpeed = 0.0f;
 
     private Vector2 startingPosition;
@@ -39,17 +41,32 @@ public class PaddleController : MonoBehaviour
     }
 
     private void HandleMovement() {
-        if (Input.GetKey(up) && rb.velocity.y < maxSpeed) {
+        bool upPressed = Input.GetKey(up);
+        bool downPressed = Input.GetKey(down);
+
+        if (upPressed && rb.velocity.y < maxSpeed) {
             Move(movementVector * Time.deltaTime);
             if (rb.velocity.y < 0) {
                 Move(directionChangeVector * Time.deltaTime);
             }
         }
-        else if (Input.GetKey(down) && rb.velocity.y > -maxSpeed) {
+        else if (downPressed && rb.velocity.y > -maxSpeed) {
             Move(-movementVector * Time.deltaTime);
             if (rb.velocity.y > 0) {
                 Move(-directionChangeVector * Time.deltaTime);
             }
+        }
+
+        if (!(upPressed || downPressed) && rb.velocity.y != 0) {
+            float slowdownForce = rb.velocity.y * slowdownRate * Time.deltaTime * -10;
+
+            rb.AddForce(
+                new Vector2(
+                    0,
+                    slowdownForce
+                ), 
+                ForceMode2D.Impulse
+            );
         }
     }
 

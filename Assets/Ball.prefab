@@ -101,6 +101,8 @@ MonoBehaviour:
     m_Bits: 1024
   - serializedVersion: 2
     m_Bits: 2048
+  bounceShrinkFactor: 1.05
+  bounceAccelerationFactor: 0.99
   ballBounce_sound: {fileID: 0}
   ballStartedMoving_sound: {fileID: 0}
 --- !u!61 &3236622565024928967

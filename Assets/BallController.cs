@@ -8,6 +8,11 @@ public class BallController : MonoBehaviour
     private LayerMask[] collidableLayers = null;
     private int layerMask;
 
+    [SerializeField]
+    private float bounceShrinkFactor = 0.0f;
+    [SerializeField]
+    private float bounceAccelerationFactor = 0.0f;
+
     [Header("Sounds")]
     public AudioSource ballBounce_sound;
     public AudioSource ballStartedMoving_sound;
@@ -57,8 +62,11 @@ public class BallController : MonoBehaviour
         }
 
         if (didBounce) {
-            velocity *= 1.05f;
-            transform.localScale *= 0.99f;
+            velocity *= bounceAccelerationFactor;
+            transform.localScale *= bounceShrinkFactor;
+
+            Debug.Log("new velocity: " + velocity);
+
             if (ballBounce_sound != null) {
                 ballBounce_sound.Play();
             }
