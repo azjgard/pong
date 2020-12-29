@@ -17,11 +17,15 @@ public class BallController : MonoBehaviour
 
     private Vector2 velocity;
 
+    private Vector2 startingScale;
+
     void Start()
     {
         rnd = new System.Random(DateTime.Now.Millisecond);
         ballSprite = GetComponent<SpriteRenderer>().sprite;
         layerMask = generateLayerMask();
+
+        startingScale = transform.localScale;
     }
 
     void Update()
@@ -54,6 +58,7 @@ public class BallController : MonoBehaviour
 
         if (didBounce) {
             velocity *= 1.05f;
+            transform.localScale *= 0.99f;
             if (ballBounce_sound != null) {
                 ballBounce_sound.Play();
             }
@@ -118,6 +123,7 @@ public class BallController : MonoBehaviour
     public void Reset() {
         velocity = new Vector2(0, 0);
         transform.position = new Vector2(0, 0);
+        transform.localScale = startingScale;
     }
 
     private int generateLayerMask() {
