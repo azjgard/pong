@@ -8,6 +8,10 @@ public class BallController : MonoBehaviour
     private LayerMask[] collidableLayers = null;
     private int layerMask;
 
+    [Header("Sounds")]
+    public AudioSource ballBounce_sound;
+    public AudioSource ballStartedMoving_sound;
+
     private Sprite ballSprite;
     private System.Random rnd;
 
@@ -50,6 +54,9 @@ public class BallController : MonoBehaviour
 
         if (didBounce) {
             velocity *= 1.05f;
+            if (ballBounce_sound != null) {
+                ballBounce_sound.Play();
+            }
         }
     }
 
@@ -103,6 +110,9 @@ public class BallController : MonoBehaviour
 
     public void StartMoving() {
         velocity = GenerateStartingVelocity();
+        if (ballStartedMoving_sound != null) {
+            ballStartedMoving_sound.Play();
+        }
     }
     
     public void Reset() {

@@ -8,12 +8,16 @@ public enum PlayerType {
 
 public class GameController : MonoBehaviour
 {
+    [Header("Dependencies")]
     public BallController ball;
     public PaddleController player1;
     public PaddleController player2;
     public GoalController player1Goal;
     public GoalController player2Goal;
     public TextMeshProUGUI scoreText;
+
+    [Header("Sounds")]
+    public AudioSource playerScored_sound;
 
     private int player1Score = 0;
     private int player2Score = 0;
@@ -30,7 +34,7 @@ public class GameController : MonoBehaviour
         player1Score = 0;
         player2Score = 0;
         ball.Reset();
-        Invoke(nameof(StartMovingBall), 2f);
+        Invoke(nameof(StartMovingBall), 0.5f);
     }
 
     public void PlayerScored(PlayerType playerType) {
@@ -43,6 +47,10 @@ public class GameController : MonoBehaviour
                 break;
             default:
                 throw new System.Exception("Invalid PlayerType passed to Score");
+        }
+
+        if (playerScored_sound != null) {
+            playerScored_sound.Play();
         }
 
         UpdateScoreText();
